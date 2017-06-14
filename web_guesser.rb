@@ -12,17 +12,18 @@ get '/' do
   }
 end
 
-def message(guess, number)
+def filter(guess, number)
   if guess.nil?
-  elsif guess.to_i > number + 5
-    "Way too high!"
-  elsif guess.to_i > number
-    "Too high!"
-  elsif guess.to_i < number + 5
-    "Way too low!"
-  elsif guess.to_i < number
-    "Too low!"
-  elsif guess.to_i == number
-    "You got it right!  \n The SECRET NUMBER is #{number}"
+  elsif guess == number
+    "You got it right!  The SECRET NUMBER is #{number}"
+  elsif guess > number
+    guess - 5 > number ? "Way too high! #{number}" : "Too high!  #{number}"
+  elsif guess < number
+    guess + 5 < number ? "Way too low! #{number}" : "Too low! #{number}"
   end
+end
+
+def message(guess, number)
+  new_guess = guess.to_i unless nil
+  filter(new_guess, number)
 end
