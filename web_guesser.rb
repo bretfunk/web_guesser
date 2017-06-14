@@ -6,17 +6,21 @@ number = SECRET_NUMBER
 
 get '/' do
   guess = params['guess']
-  message = check_guess(guess, number)
-  erb :index, locals: { number: number, message: message }
+  message, color = check_guess(guess, number) unless nil
+  erb :index, locals: { number: number, message: message, color: color }
 end
 
 def check_guess(guess, number)
   if guess.nil?
   elsif guess.to_i == number
-    "You got it right!  The SECRET NUMBER is #{number}"
+    ["You got it right!  The SECRET NUMBER is #{guess}", 'green']
+  elsif guess.to_i > number + 5
+    ['Way too high!', 'red']
   elsif guess.to_i > number
-    guess.to_i - 5 > number ? 'Way too high!' : 'Too high!'
+    ['Too high!', 'pink']
+  elsif guess.to_i < number - 5
+    ['Way too low!', 'red']
   elsif guess.to_i < number
-    guess.to_i + 5 < number ? 'Way too low!' : 'Too low!'
+    ['Too low!', 'pink']
   end
 end
